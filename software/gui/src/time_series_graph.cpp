@@ -105,6 +105,8 @@ float TimeSeriesGraph::calculateRealY(float value) {
 void TimeSeriesGraph::paint(QPainter *painter) {
   if (dataset_.size() < 2) return;
 
+  painter->setRenderHint(QPainter::Antialiasing, true);
+
   // Graph line
   QPainterPath path;
   for (const auto &p : dataset_) {

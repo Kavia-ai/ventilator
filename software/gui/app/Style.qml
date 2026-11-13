@@ -28,21 +28,25 @@ QtObject {
     property var darkTheme: QtObject {
 
         property QtObject color: QtObject {
-            property color primary: "#466eeb"
-            property color windowBackground: "#000713"
-            property color modalBackground: "#000B14"
-            property color modalHeaderColor: "#1056A1"
-            property color modalButton: "#192F42"
-            property color modalButtonHighlighted: "#0056A1"
+            property color primary: "#42D7E8"
+            property color windowBackground: "#0A1017"
+            property color surface: "#0F1922"
+            property color readingSurface: "#14212C"
+            property color border: "#273947"
+            property color borderBright: "#375062"
+            property color modalBackground: "#111C26"
+            property color modalHeaderColor: "#16313D"
+            property color modalButton: "#1B2B3A"
+            property color modalButtonHighlighted: "#284351"
 
-            property color headerButton: "#192F42"
-            property color headerButtonHighlighted: "#0056A1"
+            property color headerButton: "#1A2A38"
+            property color headerButtonHighlighted: "#284351"
 
             property color radioButtonColor: "white"
-            property color radioButtonHighlightedColor: "red"
+            property color radioButtonHighlightedColor: "#38CFE0"
 
-            property color textPrimary: "white"
-            property color textAlternative:"#AFAFAF"
+            property color textPrimary: "#F3F7FB"
+            property color textAlternative: "#93A8B9"
 
             property color alarmHighBright: "#C6393F"
             property color alarmHighDim: "#521F28"
@@ -53,8 +57,11 @@ QtObject {
             property color alarmLowBright: "#4586A3"
             property color alarmLowDim: "#204050"
 
-            property color normalGraphLine: "white"
-            property color normalGraphArea: "#202A31"
+            property color normalGraphLine: "#38CFE0"
+            property color normalGraphArea: "#1038CFE0"
+            property color pressureGraphLine: "#42D7E8"
+            property color flowGraphLine: "#5DE4B9"
+            property color volumeGraphLine: "#B6A6FF"
 
             property var parameterBackgroundByPriority: function(p) {
               var c = Style.theme.color
@@ -154,10 +161,10 @@ QtObject {
                                                            })
 
             property font parameterButtonValue: Qt.font({
-                                                            family: "Oxygen",
+                                                            family: "Noto Sans",
                                                             pixelSize: 48,
                                                             letterSpacing: 0,
-                                                            weight: Font.Normal
+                                                            weight: Font.DemiBold
                                                         })
 
             property font parameterDisplay: Qt.font({
@@ -168,20 +175,20 @@ QtObject {
                                                     })
 
             property font parameterDisplayValue: Qt.font({
-                                                             family: "Oxygen",
+                                                             family: "Noto Sans",
                                                              pixelSize: 48,
                                                              letterSpacing: 0,
-                                                             weight: Font.Normal
+                                                             weight: Font.DemiBold
                                                          })
 
             property font parameterPopupDisplayValue: Qt.font({
-                                                                  family: "Oxygen",
+                                                                  family: "Noto Sans",
                                                                   pixelSize: 160,
                                                                   letterSpacing: 0,
                                                                   weight: Font.Bold
                                                               })
             property font graphLabel: Qt.font({
-                                                  family: "Oxygen",
+                                                  family: "Noto Sans",
                                                   pixelSize: 16,
                                                   letterSpacing: 0,
                                                   weight: Font.Normal

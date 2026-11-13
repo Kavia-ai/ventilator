@@ -7,9 +7,13 @@ Rectangle {
     id: control
     width: 104; height: 104
 
-    color: Style.theme.color.parameterBackgroundByPriority(alarmPriority)
+    color: alarmPriority === AlarmPriority.NONE ?
+               Style.theme.color.readingSurface :
+               Style.theme.color.parameterBackgroundByPriority(alarmPriority)
     antialiasing: true
     radius: 8
+    border.width: alarmPriority === AlarmPriority.NONE ? 1 : 0
+    border.color: Style.theme.color.border
 
     property int alarmPriority: AlarmPriority.NONE
 

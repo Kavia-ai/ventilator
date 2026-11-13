@@ -13,11 +13,13 @@ Button {
     implicitHeight: 64
 
     background: Rectangle {
-        radius: 4
+        radius: 8
         color: root.checked || root.down ?
                    Style.theme.color.modalButtonHighlighted :
                    Style.theme.color.modalButton
-
+        border.width: 1
+        border.color: root.activeFocus ?
+                          Style.theme.color.primary : Style.theme.color.border
     }
 
     contentItem: Text {

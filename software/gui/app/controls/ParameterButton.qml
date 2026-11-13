@@ -36,9 +36,23 @@ Button {
 
     background: Rectangle {
         antialiasing: true
-        color: control.down ? Style.theme.color.headerButtonHighlighted :
-                              Style.theme.color.headerButton
+        color: control.down || popup.visible ? Style.theme.color.headerButtonHighlighted :
+                                               Style.theme.color.headerButton
         radius: 8
+        border.width: 1
+        border.color: control.activeFocus || popup.visible ?
+                          Style.theme.color.primary : Style.theme.color.borderBright
+        Behavior on color { ColorAnimation { duration: 120 } }
+
+        Rectangle {
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            width: 3
+            height: parent.height * 0.64
+            radius: 2
+            color: control.activeFocus || popup.visible ?
+                       Style.theme.color.primary : "#4D6A7E"
+        }
     }
 
     contentItem: Item {

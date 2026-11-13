@@ -18,6 +18,9 @@ Button {
         color: control.down ? Style.theme.color.headerButtonHighlighted :
                               Style.theme.color.headerButton
         radius: 8
+        border.width: 1
+        border.color: control.activeFocus ?
+                          Style.theme.color.primary : Style.theme.color.border
     }
 
     contentItem: Text {

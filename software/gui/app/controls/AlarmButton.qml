@@ -79,8 +79,8 @@ HeaderButton {
                 sourceSize: Qt.size(width, height)
                 fillMode: Image.PreserveAspectFit
                 source: root.priority != AlarmPriority.NONE ?
-                            'qrc:/images/RW_alarm-off_24.svg' :
-                            'qrc:/images/RW_alarm_24.svg'
+                            'qrc:/images/modern-bell-off.svg' :
+                            'qrc:/images/modern-bell.svg'
                 layer.enabled: true
                 layer.effect: ColorOverlay {
                     anchors.fill: icon

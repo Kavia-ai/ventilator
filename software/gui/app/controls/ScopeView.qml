@@ -12,6 +12,7 @@ Item {
     property double yMax: 1.5
     property double rangeInSeconds: 30
     property int alarmPriority: AlarmPriority.NONE
+    property color signalColor: Style.theme.color.pressureGraphLine
 
     property alias name: nameLabel.text
     property alias unit: unitLabel.text
@@ -19,6 +20,35 @@ Item {
     property alias showBottomLine: bottomLine.visible
     property alias dataset: timeSeriesGraph.dataset
 
+    Rectangle {
+        anchors.fill: parent
+        color: Style.theme.color.surface
+        radius: 8
+    }
+
+    Repeater {
+        model: 2
+        Rectangle {
+            x: timeSeriesGraph.x
+            y: timeSeriesGraph.y + timeSeriesGraph.height * (index + 1) / 3
+            width: timeSeriesGraph.width
+            height: 1
+            color: Style.theme.color.border
+            opacity: 0.45
+        }
+    }
+
+    Repeater {
+        model: 4
+        Rectangle {
+            x: timeSeriesGraph.x + timeSeriesGraph.width * (index + 1) / 5
+            y: timeSeriesGraph.y
+            width: 1
+            height: timeSeriesGraph.height
+            color: Style.theme.color.border
+            opacity: 0.25
+        }
+    }
 
     Text {
         id: yMaxLabel
@@ -47,12 +77,37 @@ Item {
         color: Style.theme.color.textAlternative
     }
 
+    Rectangle {
+        x: graphLabelRow.x - 5
+        y: graphLabelRow.y - 2
+        width: graphLabelRow.width + 10
+        height: graphLabelRow.height + 4
+        radius: 6
+        color: Style.theme.color.windowBackground
+        border.width: 1
+        border.color: Style.theme.color.border
+        z: 1
+    }
+
     Row {
+        id: graphLabelRow
+        z: 2
         anchors {
             top: parent.top; topMargin: 8
             left: yMaxLabel.right; leftMargin: 8
         }
         spacing: 4
+
+        Rectangle {
+            width: 6
+            height: 6
+            radius: 3
+            anchors.verticalCenter: parent.verticalCenter
+            color: root.alarmPriority === AlarmPriority.NONE ?
+                       root.signalColor :
+                       Style.theme.color.timeSeries.lineByPriority(root.alarmPriority
+                       )
+        }
 
         Text {
             id: nameLabel
@@ -70,8 +125,12 @@ Item {
 
     TimeSeriesGraph {
         id: timeSeriesGraph
-        lineColor: Style.theme.color.timeSeries.lineByPriority(alarmPriority)
-        areaColor: Style.theme.color.timeSeries.areaByPriority(alarmPriority)
+        lineColor: root.alarmPriority === AlarmPriority.NONE ?
+                       root.signalColor :
+                       Style.theme.color.timeSeries.lineByPriority(root.alarmPriority)
+        areaColor: root.alarmPriority === AlarmPriority.NONE ?
+                       Qt.rgba(root.signalColor.r, root.signalColor.g, root.signalColor.b, 0.06) :
+                       Style.theme.color.timeSeries.areaByPriority(root.alarmPriority)
         anchors {
             top: parent.top; topMargin: 12
             left: parent.left; leftMargin: 48
@@ -91,6 +150,6 @@ Item {
             right: parent.right; rightMargin: 4
         }
         width: parent.width; height: 1
-        color: "#435360"
+        color: Style.theme.color.border
     }
 }

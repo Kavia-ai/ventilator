@@ -27,7 +27,7 @@ Control {
             sourceSize: Qt.size(32, 32)
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
-            source: GuiStateContainer.is_using_fake_data ? 'qrc:/images/RW_debug.svg' : 'qrc:/images/RW_menu_24.svg'
+            source: GuiStateContainer.is_using_fake_data ? 'qrc:/images/modern-service.svg' : 'qrc:/images/RW_menu_24.svg'
         }
 
         onClicked: menuClicked()
@@ -42,6 +42,7 @@ Control {
         }
         width: 168; height: 40
         text: pageStack.currentMode.acronym
+        color: modeSelectionButton.down ? Style.theme.color.headerButtonHighlighted : "#163743"
         onClicked: modeSelectionClicked()
 
         contentItem: Item {
@@ -56,7 +57,7 @@ Control {
                     width: 20; height: 20
                     sourceSize: Qt.size(width, height)
                     fillMode: Image.PreserveAspectFit
-                    source: 'qrc:/images/RW_inspsenssettings_24.svg'
+                    source: 'qrc:/images/modern-lungs.svg'
                 }
 
                 Text {

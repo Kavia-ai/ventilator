@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Respira — Graphite UI Design Preview</title>
+<style>
+:root {
+  color-scheme: dark;
+  --background: #0a1017;
+  --surface: #0f1922;
+  --surface-raised: #14212c;
+  --tile: #1a2a38;
+  --border: #273947;
+  --border-bright: #375062;
+  --text: #f3f7fb;
+  --muted: #93a8b9;
+  --cyan: #42d7e8;
+  --mint: #5de4b9;
+  --violet: #b6a6ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 36px 24px 44px;
+  background: radial-gradient(circle at 50% 0, #121f2b 0, #070b10 68%);
+  color: var(--text);
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+}
+.page-header, .preview-note, .screen-wrap {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+h1 { margin: 0; font-size: 27px; font-weight: 600; letter-spacing: -.035em; }
+.page-header p:last-child { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+.badge {
+  white-space: nowrap;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: #0c141c;
+  color: var(--muted);
+  font-size: 11px;
+}
+.screen-wrap {
+  overflow-x: auto;
+  padding: 10px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #1b2833, #0b1117);
+  border: 1px solid #2b3c4b;
+  box-shadow: 0 32px 96px #0008;
+}
+.screen {
+  width: 100%;
+  min-width: 720px;
+  aspect-ratio: 1024 / 600;
+  background: linear-gradient(180deg, #0d151e, var(--background));
+  padding: .85%;
+  display: grid;
+  grid-template-rows: 7% minmax(0, 1fr) 13.8%;
+  gap: 1.35%;
+  container-type: inline-size;
+  border: 1px solid #233340;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 #ffffff0d;
+  font-variant-numeric: tabular-nums;
+}
+.toolbar {
+  display: flex;
+  align-items: stretch;
+  gap: .8%;
+  min-height: 0;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: default;
+}
+.tool {
+  background: linear-gradient(180deg, #213444, #182735);
+  border: 1px solid var(--border-bright);
+  border-radius: 9px;
+  box-shadow: inset 0 1px 0 #ffffff14, 0 2px 6px #0004;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+}
+.tool svg { width: 21px; height: 21px; }
+.service { width: 5.6%; padding: 0; color: var(--muted); }
+.mode {
+  width: 16.7%;
+  justify-content: flex-start;
+  padding-inline: 2.1%;
+  font-size: 1.85cqw;
+  font-weight: 600;
+  letter-spacing: .04em;
+  border-color: #367181;
+  background: linear-gradient(180deg, #1a3d49, #132c37);
+  box-shadow: inset 0 1px 0 #7ceeff24, 0 0 0 1px #42d7e817;
+}
+.mode svg { color: var(--cyan); }
+.mode small {
+  margin-left: auto;
+  color: #8fdce6;
+  font-size: .56em;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.toolbar-spacer { flex: 1; }
+.alarm { width: 10.5%; font-size: 1.8cqw; font-weight: 500; }
+.status {
+  width: 21.5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-right: 8px;
+  color: #dbe6ef;
+  font-size: 1.44cqw;
+  white-space: nowrap;
+}
+.status .muted { color: var(--muted); font-size: .88em; }
+.status .dot { width: 3px; height: 3px; background: #587287; border-radius: 50%; }
+.status svg { width: 20px; height: 20px; color: var(--mint); }
+.main { display: grid; grid-template-columns: minmax(0, 3.76fr) minmax(0, 1fr); gap: .85%; min-height: 0; }
+.waves {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  background: linear-gradient(180deg, #111d27, #0d161f);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  box-shadow: inset 0 1px 0 #ffffff0a;
+  overflow: hidden;
+}
+.wave {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 66% 50%, #ffffff05, transparent 60%);
+}
+.wave + .wave { border-top: 1px solid #223340; }
+.wave-label {
+  position: absolute;
+  top: 9px;
+  left: 2.3%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.5cqw;
+  white-space: nowrap;
+}
+.wave-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px 8px 3px 7px;
+  border-radius: 6px;
+  background: #0a1219bf;
+  border: 1px solid #263846;
+}
+.wave-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  align-self: center;
+}
+.wave-label strong { color: var(--text); font-weight: 500; letter-spacing: -.01em; }
+.unit { color: var(--muted); font-size: .84em; font-weight: 400; }
+.scale { color: #7e97ab; min-width: 27px; text-align: right; font-size: .92em; }
+.wave svg.plot { position: absolute; inset: 0; width: 100%; height: 100%; }
+.grid-major { stroke: #1e2f3c; stroke-width: .7; stroke-dasharray: 2 6; }
+.grid-time { stroke: #182631; stroke-width: .7; }
+.zero-line { stroke: #314958; stroke-width: .9; }
+.sweep-gap { fill: #0c151dd9; }
+.sweep-line { stroke: #d8f6ff55; stroke-width: .9; stroke-dasharray: 2 3; }
+.trace { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.trace-glow { fill: none; stroke: currentColor; stroke-opacity: .18; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.cursor { fill: currentColor; stroke: #0b1118; stroke-width: 1.4; }
+.pressure { color: var(--cyan); }
+.flow { color: var(--mint); }
+.volume { color: var(--violet); }
+.scale-bottom { position: absolute; left: 1.9%; bottom: 7px; font-size: 1.38cqw; color: #7e97ab; }
+.readings {
+  background: linear-gradient(180deg, #111d27, #0d161f);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  display: grid;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  padding: 7px;
+  min-width: 0;
+}
+.reading-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; min-height: 0; }
+.reading {
+  background: linear-gradient(180deg, #15232f, #101b24);
+  border: 1px solid #223341;
+  border-radius: 8px;
+  padding: 5px 7px 3px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.reading.primary-metric { border-color: #2c4a59; }
+.reading-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 1.38cqw;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #d6e3ee;
+}
+.reading-value {
+  font-size: 4.35cqw;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.05em;
+  text-align: center;
+}
+.ratio { grid-column: 1 / -1; }
+.ratio .reading-value { text-align: left; padding-left: 8%; font-size: 4.15cqw; }
+.settings { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8%; min-height: 0; padding-inline: .7%; }
+.setting {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  text-align: left;
+  background: linear-gradient(160deg, #213445, #162532);
+  border: 1px solid #314757;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 #ffffff14, 0 4px 10px #0004;
+  padding: 9px 11px 9px 13px;
+  overflow: hidden;
+  transition: border-color 120ms, background 120ms;
+}
+.setting::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #4d6a7e;
+}
+.setting.selected {
+  border-color: #46bfd0;
+  background: linear-gradient(160deg, #1f3d4b, #162a37);
+  box-shadow: inset 0 1px 0 #8cf3ff29, 0 0 0 1px #42d7e824;
+}
+.setting.selected::before { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+.setting:hover { border-color: #5a8fa0; background: #223848; }
+.setting:active { background: #284351; }
+button:focus-visible { outline: 2px solid var(--cyan); outline-offset: -4px; }
+.setting-name { display: block; font-size: 1.78cqw; font-weight: 600; line-height: 1.2; letter-spacing: .01em; }
+.setting-unit { display: block; color: var(--muted); font-size: 1.28cqw; margin-top: 5px; }
+.setting-value { font-size: 4.55cqw; line-height: 1; font-weight: 600; letter-spacing: -.045em; padding-right: 3px; }
+.preview-note { display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 18px; }
+.preview-note p { margin: 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; white-space: nowrap; }
+.legend span::before { content: ""; display: inline-block; height: 6px; width: 6px; border-radius: 50%; background: currentColor; margin-right: 6px; vertical-align: 1px; }
+.symbols { position: absolute; width: 0; height: 0; overflow: hidden; }
+@media (max-width: 760px) {
+  body { padding: 20px 12px; }
+  .page-header, .preview-note { align-items: start; flex-direction: column; gap: 12px; }
+  h1 { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Respira / Visual direction 02</p>
+    <h1>Precision clinical, refined. Same layout.</h1>
+    <p>Elevated graphite cards · sweep-cursor waveforms · clearer control hierarchy</p>
+  </div>
+  <span class="badge">Design preview — not a medical device</span>
+</header>
+
+<svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <symbol id="service" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="7" y="5" width="10" height="15" rx="4"/>
+        <path d="M9 5 7 2m8 3 2-3M3 9h4m10 0h4M3 14h4m10 0h4M5 21l3-3m8 0 3 3M12 6v13M9 2h6"/>
+      </g>
+    </symbol>
+    <symbol id="lungs" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v7m0-3L9 10m3-3 3 3M9 6C7 6 3 12 3 16c0 4 5 5 7 2V9m5-3c2 0 6 6 6 10 0 4-5 5-7 2V9"/>
+      </g>
+    </symbol>
+    <symbol id="bell" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 17h14l-2-3v-4a5 5 0 0 0-10 0v4l-2 3Zm5 3h4M12 3V2"/>
+      </g>
+    </symbol>
+    <symbol id="battery" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="18" height="12" rx="2"/>
+        <path d="M22 10v4"/>
+      </g>
+      <rect x="5" y="9" width="10" height="6" rx="1" fill="currentColor"/>
+    </symbol>
+    <path id="pressure-cycle" d="M0 130L8 130C13 129 17 111 24 107C30 102 34 111 40 115C51 124 63 128 72 130L80 130"/>
+    <path id="flow-cycle" d="M0 94L9 94L11 48L15 51L18 46L22 50L26 48L31 53L34 55L36 121L39 107L49 105L61 101L72 95L80 94"/>
+    <path id="volume-cycle" d="M0 141L10 141C15 141 21 115 28 91C31 80 34 76 37 84C44 102 52 124 65 137C70 141 75 141 80 141"/>
+  </defs>
+</svg>
+
+<main class="screen-wrap" aria-label="Proposed ventilator display appearance">
+  <div class="screen">
+    <div class="toolbar">
+      <button class="tool service" type="button" aria-label="Service — visual preview only">
+        <svg aria-hidden="true"><use href="#service"/></svg>
+      </button>
+      <button class="tool mode" type="button" aria-label="Pressure control mode — visual preview only">
+        <svg aria-hidden="true"><use href="#lungs"/></svg><span>PC</span><small>Mode</small>
+      </button>
+      <div class="toolbar-spacer"></div>
+      <button class="tool alarm" type="button" aria-label="Zero alarms — illustrative, not a live status">
+        <span>0</span><svg aria-hidden="true"><use href="#bell"/></svg>
+      </button>
+      <div class="status" aria-label="Illustrative time 10:27 AM, battery 70 percent">
+        <span>10:27 <span class="muted">AM</span></span><span class="dot"></span><span>70<span class="muted">%</span></span>
+        <svg aria-hidden="true"><use href="#battery"/></svg>
+      </div>
+    </div>
+
+    <div class="main">
+      <section class="waves" aria-label="Static illustrative waveform previews, not live patient data">
+        <div class="wave pressure">
+          <div class="wave-label"><span class="scale">60</span><span class="wave-pill"><strong>Pressure</strong><span class="unit">cmH₂O</span></span></div>
+          <svg class="plot" viewBox="0 0 780 150" preserveAspectRatio="none" role="img" aria-label="Pressure waveform style illustration">
+            <defs>
+              <linearGradient id="pressure-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#42d7e8" stop-opacity=".18"/><stop offset="1" stop-color="#42d7e8" stop-opacity="0"/></linearGradient>
+            </defs>
+            <path class="grid-time" d="M160 8V144M320 8V144M480 8V144M640 8V144"/>
+            <path class="grid-major" d="M8 52H774M8 96H774"/>
+            <path class="zero-line" d="M8 140H774"/>
+            <path d="M54 140L54 130L62 130C67 129 71 111 78 107C84 102 88 111 94 115C105 124 117 128 126 130L134 130L142 130C147 129 151 111 158 107C164 102 168 111 174 115C185 124 197 128 206 130L214 130L222 130C227 129 231 111 238 107C244 102 248 111 254 115C265 124 277 128 286 130L294 130L302 130C307 129 311 111 318 107C324 102 328 111 334 115C345 124 357 128 366 130L374 130L382 130C387 129 391 111 398 107C404 102 408 111 414 115C425 124 437 128 446 130L454 130L462 130C467 129 471 111 478 107C484 102 488 111 494 115C505 124 517 128 526 130L534 130L542 130C547 129 551 111 558 107C564 102 568 111 574 115C585 124 597 128 606 130L614 130L622 130C627 129 631 111 638 107C644 102 648 111 654 115C665 124 677 128 686 130L694 130L694 140Z" fill="url(#pressure-fill)"/>
+            <g class="trace-glow"><use href="#pressure-cycle" x="54"/><use href="#pressure-cycle" x="134"/><use href="#pressure-cycle" x="214"/><use href="#pressure-cycle" x="294"/><use href="#pressure-cycle" x="374"/><use href="#pressure-cycle" x="454"/><use href="#pressure-cycle" x="534"/><use href="#pressure-cycle" x="614"/></g>
+            <g class="trace"><use href="#pressure-cycle" x="54"/><use href="#pressure-cycle" x="134"/><use href="#pressure-cycle" x="214"/><use href="#pressure-cycle" x="294"/><use href="#pressure-cycle" x="374"/><use href="#pressure-cycle" x="454"/><use href="#pressure-cycle" x="534"/><use href="#pressure-cycle" x="614"/></g>
+            <rect class="sweep-gap" x="694" y="0" width="22" height="150"/>
+            <path class="sweep-line" d="M694 6V144"/>
+            <g class="trace" opacity=".42"><use href="#pressure-cycle" x="716"/></g>
+            <circle class="cursor" cx="694" cy="130" r="3"/>
+          </svg>
+          <span class="scale-bottom">0</span>
+        </div>
+        <div class="wave flow">
+          <div class="wave-label"><span class="scale">60</span><span class="wave-pill"><strong>Flow</strong><span class="unit">L/min</span></span></div>
+          <svg class="plot" viewBox="0 0 780 150" preserveAspectRatio="none" role="img" aria-label="Flow waveform style illustration">
+            <defs>
+              <linearGradient id="flow-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5de4b9" stop-opacity=".14"/><stop offset=".62" stop-color="#5de4b9" stop-opacity=".02"/><stop offset="1" stop-color="#5de4b9" stop-opacity=".1"/></linearGradient>
+            </defs>
+            <path class="grid-time" d="M160 8V144M320 8V144M480 8V144M640 8V144"/>
+            <path class="grid-major" d="M8 49H774M8 130H774"/>
+            <path class="zero-line" d="M8 94H774"/>
+            <path d="M54 94L63 94L65 48L69 51L72 46L76 50L80 48L85 53L88 55L90 121L93 107L103 105L115 101L126 95L134 94L143 94L145 48L149 51L152 46L156 50L160 48L165 53L168 55L170 121L173 107L183 105L195 101L206 95L214 94L223 94L225 48L229 51L232 46L236 50L240 48L245 53L248 55L250 121L253 107L263 105L275 101L286 95L294 94L303 94L305 48L309 51L312 46L316 50L320 48L325 53L328 55L330 121L333 107L343 105L355 101L366 95L374 94L383 94L385 48L389 51L392 46L396 50L400 48L405 53L408 55L410 121L413 107L423 105L435 101L446 95L454 94L463 94L465 48L469 51L472 46L476 50L480 48L485 53L488 55L490 121L493 107L503 105L515 101L526 95L534 94L543 94L545 48L549 51L552 46L556 50L560 48L565 53L568 55L570 121L573 107L583 105L595 101L606 95L614 94L623 94L625 48L629 51L632 46L636 50L640 48L645 53L648 55L650 121L653 107L663 105L675 101L686 95L694 94Z" fill="url(#flow-fill)"/>
+            <g class="trace-glow"><use href="#flow-cycle" x="54"/><use href="#flow-cycle" x="134"/><use href="#flow-cycle" x="214"/><use href="#flow-cycle" x="294"/><use href="#flow-cycle" x="374"/><use href="#flow-cycle" x="454"/><use href="#flow-cycle" x="534"/><use href="#flow-cycle" x="614"/></g>
+            <g class="trace"><use href="#flow-cycle" x="54"/><use href="#flow-cycle" x="134"/><use href="#flow-cycle" x="214"/><use href="#flow-cycle" x="294"/><use href="#flow-cycle" x="374"/><use href="#flow-cycle" x="454"/><use href="#flow-cycle" x="534"/><use href="#flow-cycle" x="614"/></g>
+            <rect class="sweep-gap" x="694" y="0" width="22" height="150"/>
+            <path class="sweep-line" d="M694 6V144"/>
+            <g class="trace" opacity=".42"><use href="#flow-cycle" x="716"/></g>
+            <circle class="cursor" cx="694" cy="94" r="3"/>
+          </svg>
+          <span class="scale-bottom">−60</span>
+        </div>
+        <div class="wave volume">
+          <div class="wave-label"><span class="scale">1000</span><span class="wave-pill"><strong>Tidal Volume</strong><span class="unit">mL</span></span></div>
+          <svg class="plot" viewBox="0 0 780 150" preserveAspectRatio="none" role="img" aria-label="Tidal volume waveform style illustration">
+            <defs>
+              <linearGradient id="volume-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6a6ff" stop-opacity=".18"/><stop offset="1" stop-color="#b6a6ff" stop-opacity="0"/></linearGradient>
+            </defs>
+            <path class="grid-time" d="M160 8V144M320 8V144M480 8V144M640 8V144"/>
+            <path class="grid-major" d="M8 51H774M8 95H774"/>
+            <path class="zero-line" d="M8 141H774"/>
+            <path d="M54 141L64 141C69 141 75 115 82 91C85 80 88 76 91 84C98 102 106 124 119 137C124 141 129 141 134 141L144 141C149 141 155 115 162 91C165 80 168 76 171 84C178 102 186 124 199 137C204 141 209 141 214 141L224 141C229 141 235 115 242 91C245 80 248 76 251 84C258 102 266 124 279 137C284 141 289 141 294 141L304 141C309 141 315 115 322 91C325 80 328 76 331 84C338 102 346 124 359 137C364 141 369 141 374 141L384 141C389 141 395 115 402 91C405 80 408 76 411 84C418 102 426 124 439 137C444 141 449 141 454 141L464 141C469 141 475 115 482 91C485 80 488 76 491 84C498 102 506 124 519 137C524 141 529 141 534 141L544 141C549 141 555 115 562 91C565 80 568 76 571 84C578 102 586 124 599 137C604 141 609 141 614 141L624 141C629 141 635 115 642 91C645 80 648 76 651 84C658 102 666 124 679 137C684 141 689 141 694 141Z" fill="url(#volume-fill)"/>
+            <g class="trace-glow"><use href="#volume-cycle" x="54"/><use href="#volume-cycle" x="134"/><use href="#volume-cycle" x="214"/><use href="#volume-cycle" x="294"/><use href="#volume-cycle" x="374"/><use href="#volume-cycle" x="454"/><use href="#volume-cycle" x="534"/><use href="#volume-cycle" x="614"/></g>
+            <g class="trace"><use href="#volume-cycle" x="54"/><use href="#volume-cycle" x="134"/><use href="#volume-cycle" x="214"/><use href="#volume-cycle" x="294"/><use href="#volume-cycle" x="374"/><use href="#volume-cycle" x="454"/><use href="#volume-cycle" x="534"/><use href="#volume-cycle" x="614"/></g>
+            <rect class="sweep-gap" x="694" y="0" width="22" height="150"/>
+            <path class="sweep-line" d="M694 6V144"/>
+            <g class="trace" opacity=".42"><use href="#volume-cycle" x="716"/></g>
+            <circle class="cursor" cx="694" cy="141" r="3"/>
+          </svg>
+          <span class="scale-bottom">−100</span>
+        </div>
+      </section>
+
+      <section class="readings" aria-label="Illustrative measured readings">
+        <div class="reading-row">
+          <div class="reading primary-metric"><div class="reading-label"><span>PIP</span><span class="unit">cmH₂O</span></div><div class="reading-value">16</div></div>
+          <div class="reading primary-metric"><div class="reading-label"><span>PEEP</span><span class="unit">cmH₂O</span></div><div class="reading-value">4</div></div>
+        </div>
+        <div class="reading-row">
+          <div class="reading"><div class="reading-label"><span>Flow</span><span class="unit">L/min</span></div><div class="reading-value">47</div></div>
+          <div class="reading"><div class="reading-label"><span>RR</span><span class="unit">b/min</span></div><div class="reading-value">12</div></div>
+        </div>
+        <div class="reading-row">
+          <div class="reading ratio"><div class="reading-label"><span>I:E</span><span class="unit">ratio</span></div><div class="reading-value">1:4</div></div>
+        </div>
+        <div class="reading-row">
+          <div class="reading"><div class="reading-label"><span>TV</span><span class="unit">mL</span></div><div class="reading-value">220</div></div>
+          <div class="reading"><div class="reading-label"><span>FiO₂</span><span class="unit">%</span></div><div class="reading-value">0</div></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="settings" aria-label="Illustrative settings; controls do not change values">
+      <button class="setting selected" type="button" aria-label="PIP setting 15 centimeters of water — highlighted preview state"><span><span class="setting-name">PIP</span><span class="setting-unit">cmH₂O</span></span><span class="setting-value">15</span></button>
+      <button class="setting" type="button" aria-label="PEEP setting 5 centimeters of water — preview only"><span><span class="setting-name">PEEP</span><span class="setting-unit">cmH₂O</span></span><span class="setting-value">5</span></button>
+      <button class="setting" type="button" aria-label="FiO2 setting 21 percent — preview only"><span><span class="setting-name">FiO₂</span><span class="setting-unit">%</span></span><span class="setting-value">21</span></button>
+      <button class="setting" type="button" aria-label="Inspiratory time setting 1 second — preview only"><span><span class="setting-name">I-time</span><span class="setting-unit">sec</span></span><span class="setting-value">1.0</span></button>
+      <button class="setting" type="button" aria-label="Respiratory rate setting 12 breaths per minute — preview only"><span><span class="setting-name">RR</span><span class="setting-unit">b/min</span></span><span class="setting-value">12</span></button>
+    </section>
+  </div>
+</main>
+
+<footer class="preview-note">
+  <p>Static visual proposal. Waveforms are illustrative, not exact signal reproductions.<br>Controls show visual states only; no hardware, live data, or clinical functionality.</p>
+  <div class="legend" aria-label="Waveform color legend">
+    <span class="pressure">Pressure</span><span class="flow">Flow</span><span class="volume">Volume</span>
+  </div>
+</footer>
+</body>
+</html>
