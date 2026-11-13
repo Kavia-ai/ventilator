@@ -2,6 +2,7 @@
 src/protocols/*.cc
 src/protocols/*.h
 build/
+build-qt6/
 coverage_reports/
 
 #Conan created files

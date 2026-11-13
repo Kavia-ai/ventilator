@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
       line = line.trimmed();
       if (line.isEmpty() || line.startsWith("#") || line.startsWith("time"))
         continue;
-      auto tokens = line.split(" ").toVector();
+      auto tokens = line.split(" ");
 
       ControllerStatus status = ControllerStatus_init_zero;
       status.sensor_readings.patient_pressure_cm_h2o = tokens[1].toFloat();
@@ -175,8 +175,8 @@ int main(int argc, char *argv[]) {
   communicate.Start();
 
   qmlRegisterType<TimeSeriesGraph>("Respira", 1, 0, "TimeSeriesGraph");
-  qmlRegisterUncreatableType<AlarmPriority>("Respira", 1, 0, "AlarmPriority",
-                                            "is an enum");
+  qmlRegisterUncreatableMetaObject(AlarmPriority::staticMetaObject, "Respira", 1, 0,
+                                   "AlarmPriority", "is an enum");
   qmlRegisterUncreatableType<AlarmManager>(
       "Respira", 1, 0, "AlarmManager",
       "AlarmManager cannot be instantiated from QML");
@@ -190,6 +190,11 @@ int main(int argc, char *argv[]) {
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+  if (engine.rootObjects().isEmpty()) {
+    CRIT("Failed to load the GUI root object");
+    return EXIT_FAILURE;
+  }
 
   if (parser.isSet(startupOnlyOption)) {
     CRIT("VentilatorUI stated with startup-only. Shutting down immediately.");

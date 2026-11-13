@@ -1,4 +1,4 @@
-"""Local Qt5 demo helper. Run with WSL Ubuntu's python3; never opens hardware ports."""
+"""Local Qt6 demo helper. Run with WSL Ubuntu's python3; never opens hardware ports."""
 import argparse
 import os
 from pathlib import Path
@@ -10,7 +10,7 @@ SOFTWARE = BASE / "software"
 GUI = SOFTWARE / "gui"
 COMMON = SOFTWARE / "common"
 VENV = Path.home() / ".cache" / "respira-gui-venv"
-BUILD = GUI / "build"
+BUILD = GUI / "build-qt6"
 ENV = dict(os.environ, PATH=f"{VENV / 'bin'}:{os.environ.get('PATH', '')}",
            QT_QPA_PLATFORM="xcb",
            CONAN_HOME=str(Path.home() / ".cache" / "respira-gui-conan"))
@@ -25,7 +25,7 @@ def setup():
     run(sys.executable, "-m", "venv", VENV)
     run(VENV / "bin/python", "-m", "pip", "install", "--disable-pip-version-check",
         "--index-url", "https://pypi.org/simple",
-        "conan==2.34.0", "platformio==6.1.16", "nanopb==0.4.9.1", "protobuf")
+        "conan==2.34.0", "platformio==6.1.16", "nanopb==0.4.9.1", "protobuf", "PyQt6")
     run("conan", "profile", "detect", "--force")
     run("pio", "pkg", "install", "-e", "native", "--library",
         "nanopb/Nanopb@0.4.93", "--no-save", cwd=COMMON)
@@ -42,7 +42,7 @@ def build():
 
 
 def screenshot(name):
-    from PyQt5.QtGui import QGuiApplication
+    from PyQt6.QtGui import QGuiApplication
     app = QGuiApplication([])
     result = subprocess.run(
         ["xdotool", "search", "--onlyvisible", "--name", "^Ventilator$"],
@@ -59,7 +59,7 @@ def screenshot(name):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["setup", "build", "run", "capture", "test"])
+    parser.add_argument("action", choices=["setup", "build", "run", "capture", "test", "_capture"])
     parser.add_argument("--name", default="current-ui")
     args = parser.parse_args()
     if args.action == "setup":
@@ -69,11 +69,12 @@ def main():
     elif args.action == "run":
         run(BUILD / "bin" / "ventilator_gui_app")
     elif args.action == "test":
-        run("cmake", "--build", BUILD, "--target", "gui_backend_tests", "--parallel", "4")
-        run(BUILD / "bin" / "gui_backend_tests")
-    else:
-        os.environ["QT_QPA_PLATFORM"] = "xcb"
+        run("cmake", "--build", BUILD, "--target", "everything", "--parallel", "4")
+        run("ctest", "--test-dir", BUILD, "--output-on-failure")
+    elif args.action == "_capture":
         screenshot(args.name)
+    else:
+        run(VENV / "bin/python", __file__, "_capture", "--name", args.name)
 
 
 if __name__ == "__main__":

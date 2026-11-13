@@ -22,7 +22,7 @@ If you are not actively working on the code for this application but simply need
 
 ## Building the GUI
 
-You may want to build and run the GUI application natively, either on your primary machine or on the *RPi*. Most recently, we have been building and testing on the 64 bits desktop edition of [Raspberry Pi OS](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit) distribution, more specifically it's the `v11 Bullseye 64 bits (January 28th 2022)` release ([download link](https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2022-01-28/)).
+The GUI requires Qt 6 development libraries and QML runtime modules, including Qt Multimedia, SerialPort, SVG, Quick Controls, and Qt5Compat Graphical Effects. Use a distribution that supplies these packages; the older Raspberry Pi OS Bullseye image previously used by this project is not a verified Qt 6 deployment target. Target-device rendering, audio and serial behavior must be validated separately.
 
 The [gui.sh](gui.sh) script does almost everything you need:
 * installs dependencies
@@ -55,15 +55,7 @@ You can also compile with `--debug` option. You will see additional information 
 
 ### Mac OS X
 
-You may also build and run on MacOS, but you may have to install some dependencies manually. This section may be out of date.
-
-Go to https://www.qt.io/download-open-source and download the Qt Online Installer. When asked to select a version, check "Archive", click "Filter", and select 5.15.2. Unselect all modules except core QT and Charts.
-
-After installation completes, add `qmake` to your PATH, e.g.:
-
-```
-export PATH=/Users/$USER/Qt/5.15.2/clang_64/bin:$PATH
-```
+Install Qt 6 with Homebrew (`brew install qt`) or the Qt Online Installer, including Multimedia, SerialPort and Qt 5 Compatibility Module. Set `CMAKE_PREFIX_PATH` to the Qt 6 installation prefix if CMake cannot discover it. macOS has not been verified as part of this migration.
 
 ### Installing Qt Creator (optional)
 
@@ -100,6 +92,8 @@ To run unit tests, type:
 ```
 ./gui.sh test
 ```
+
+After building both application and test targets, run `ctest --test-dir build --output-on-failure` to run the backend tests and the headless QML startup smoke test. Startup without `--serial-port` uses recorded data and does not connect to hardware.
 
 ### Logs & debugging
 

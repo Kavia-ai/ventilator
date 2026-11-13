@@ -53,25 +53,23 @@ EOF
 }
 
 install_linux() {
-  # Last tuned for Ubuntu 2021.04 Hirsute
+  # Requires a distribution providing Qt 6 development and QML packages.
   sudo apt install -y \
            cmake \
-           qtbase5-dev \
-           qtbase5-dev-tools \
-           qtmultimedia5-dev \
-           qtdeclarative5-dev \
-           qtdeclarative5-dev-tools \
-           qtquickcontrols2-5-dev \
-           libqt5serialport5 \
-           libqt5serialport5-dev \
-           libqt5multimedia5 \
-           libqt5multimedia5-plugins \
-           libqt5multimediaquick5 \
-           libqt5multimediawidgets5 \
-           qml-module-qtcharts \
-           qml-module-qtquick-controls \
-           qml-module-qtquick-controls2 \
-           qml-module-qtmultimedia \
+           qt6-base-dev \
+           qt6-declarative-dev \
+           qt6-multimedia-dev \
+           qt6-serialport-dev \
+           qt6-5compat-dev \
+           qt6-svg-dev \
+           qml6-module-qt5compat-graphicaleffects \
+           qml6-module-qtmultimedia \
+           qml6-module-qtqml-workerscript \
+           qml6-module-qtquick \
+           qml6-module-qtquick-controls \
+           qml6-module-qtquick-layouts \
+           qml6-module-qtquick-templates \
+           qml6-module-qtquick-window \
            pulseaudio \
            xvfb
 }
@@ -166,7 +164,7 @@ if [ "$1" == "help" ] || [ "$1" == "-h" ]; then
 elif [ "$1" == "install" ]; then
   ../common/common.sh install
   if [ "$PLATFORM" == "Darwin" ]; then
-    brew install qt5
+    brew install qt
     configure_conan
     exit_good
   elif [ "$PLATFORM" == "Linux" ]; then

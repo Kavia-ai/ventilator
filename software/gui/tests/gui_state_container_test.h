@@ -16,7 +16,11 @@ limitations under the License.
 #pragma once
 
 #include <QCoreApplication>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQmlEngine>
 #include <QtTest>
+#include <memory>
 
 #include "gui_state_container.h"
 
@@ -31,4 +35,24 @@ class GuiStateContainerTest : public QObject {
   void cleanupTestCase() {}
 
   void testInit() { GuiStateContainer ch(DurationMs(0), DurationMs(0)); }
+
+  void testQmlModeSelectionUpdatesOutgoingStatus() {
+    GuiStateContainer state(DurationMs(0), DurationMs(0));
+    QQmlEngine engine;
+    engine.rootContext()->setContextProperty("state", &state);
+    QQmlComponent component(&engine);
+    component.setData(
+        "import QtQml\n"
+        "QtObject { function selectMode(value) { state.commanded_mode = value } }",
+        QUrl());
+    QVERIFY2(component.isReady(), qPrintable(component.errorString()));
+    std::unique_ptr<QObject> object(component.create());
+    QVERIFY2(object != nullptr, qPrintable(component.errorString()));
+    QSignalSpy changes(&state, &GuiStateContainer::params_changed);
+    QVERIFY(QMetaObject::invokeMethod(
+        object.get(), "selectMode",
+        Q_ARG(QVariant, QVariant(static_cast<int>(GuiStateContainer::PRESSURE_ASSIST)))));
+    QCOMPARE(changes.count(), 1);
+    QCOMPARE(state.GetGuiStatus().desired_params.mode, VentMode::VentMode_PRESSURE_ASSIST);
+  }
 };
