@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 # to always look for includes there:
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 COMPONENTS Test REQUIRED)
+find_package(Qt6 COMPONENTS Test REQUIRED)
 
 set(${this_target}_sources
   tst_main.cpp
@@ -45,14 +45,17 @@ target_include_directories(
 target_link_libraries(
   ${this_target}
   PRIVATE ${PROJECT_NAME}_backend
-  PRIVATE Qt5::Test
+  PRIVATE Qt6::Test
 )
 
 # Creates command dependent on existence of target
 add_custom_target(run_gui_backend_tests
   COMMAND $<TARGET_FILE:${this_target}>
   DEPENDS ${this_target})
-add_test(NAME "RunBackendTests" COMMAND run_gui_backend_tests)
+add_test(NAME "RunBackendTests" COMMAND $<TARGET_FILE:${this_target}>)
+add_test(NAME "GuiStartup" COMMAND $<TARGET_FILE:${PROJECT_NAME}_app> --startup-only)
+set_tests_properties("GuiStartup" PROPERTIES
+  ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software")
 
 #############
 # ALL TESTS #

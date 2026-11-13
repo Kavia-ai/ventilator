@@ -132,12 +132,12 @@ ApplicationWindow {
             } else if (currentMode.mode == GuiStateContainer.HIGH_FLOW_NASAL_CANNULA) {
               pageStack.replace(highFlowNasalCannulaMode);
             }
-            GuiStateContainer.mode = currentMode.mode
+            GuiStateContainer.commanded_mode = currentMode.mode
         }
 
         Connections {
             target: modeSelectionPopup
-            onSelectedMode: pageStack.currentMode = mode
+            function onSelectedMode(mode) { pageStack.currentMode = mode }
         }
     }
 

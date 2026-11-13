@@ -101,7 +101,7 @@ Popup {
 
                     width: 304; height: 240
                     objectName: model.mode
-                    checked: popup.currentMode.mode === objectName
+                    checked: popup.currentMode.mode === model.mode
                     text: model.title
                     ButtonGroup.group: buttonGroup
                     checkable: true
